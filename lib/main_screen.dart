@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -11,10 +10,8 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-
-
-
 class _MainScreenState extends State<MainScreen> {
+  late WebViewController _webViewController;
 
   @override
   void initState() {
@@ -35,8 +32,8 @@ class _MainScreenState extends State<MainScreen> {
             icon: const Icon(Icons.add),
           ),
           PopupMenuButton<String>(
-            onSelected: (value){
-              print(value);
+            onSelected: (value) {
+              _webViewController.loadUrl(value);
             },
             itemBuilder: (context) => [
               const PopupMenuItem<String>(
@@ -57,6 +54,10 @@ class _MainScreenState extends State<MainScreen> {
       ),
       body: WebView(
         initialUrl: 'https://flutter.dev',
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebViewCreated: (controller) {
+          _webViewController = controller;
+        },
       ),
     );
   }
